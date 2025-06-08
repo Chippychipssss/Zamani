@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Budget Suggestions | Zamani</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f2f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+            transition: 0.3s ease-in-out;
+        }
+        .card:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 16px;
+            font-size: 1.6rem;
+            color: #222;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .tip {
+            font-size: 1.1rem;
+            color: #444;
+            line-height: 1.6;
+        }
+        .affirmation {
+            margin-top: 24px;
+            font-size: 1.2rem;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3366cc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>📊 Smart Budget Suggestions</h2>
+            <div class="tip">
+                {% if suggestions %}
+                    <ul>
+                        {% for tip in suggestions %}
+                            <li>{{ tip }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No smart suggestions available right now. Please try again later.</p>
+                {% endif %}
+                {% if affirmation %}
+                    <div class="affirmation">
+                        {{ affirmation }}
+                    </div>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('home') }}" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

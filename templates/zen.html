@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Zen Mode – Zamani</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            background-color: #dbeafe; /* calming light blue */
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to top right, #cce5ff, #e0f7fa);
+            color: #0f172a;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .nav {
+            margin-bottom: 30px;
+        }
+        .nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        .quote-box {
+            margin: 30px auto;
+            max-width: 600px;
+            font-size: 1.4rem;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 12px 24px;
+            margin-top: 20px;
+            font-size: 1rem;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            margin: 40px auto;
+            border-radius: 50%;
+            background-color: rgba(16, 185, 129, 0.2);
+            animation: breathe 8s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        @keyframes breathe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+        
+        .breathe-text {
+            font-size: 1.2rem;
+            color: #0f172a;
+            margin-top: 10px;
+            animation: fadeText 8s ease-in-out infinite;
+        }
+        
+        @keyframes fadeText {
+            0%, 100% { opacity: 1; content: "Breathe in..."; }
+            50% { opacity: 0.5; content: "Breathe out..."; }
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+
+    <!-- 🔗 Nav -->
+    <div class="nav">
+        <a href="/">🏠 Home</a> |
+        <a href="/weekly">📆 Weekly Overview</a> |
+        <a href="/zen">🎧 Zen Mode</a>
+        <a href="/dashboard">📈 Dashboard</a>
+        <a href="{{ url_for('smart_budget') }}" class="smart-budget-button">💡 View Smart Budget Tips</a>
+
+    </div>
+
+    <h1>🌸 Zen Mode</h1>
+    <p>Breathe in... Breathe out... Let go of what you can't control.</p>
+    <div class="breathing-circle"></div>
+<div class="breathe-text" id="breatheText">Breathe in...</div>
+
+
+    <audio id="zenAudio" autoplay loop>
+        <source src="{{ url_for('static', filename='zen/Captain Calvin.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+
+    <div class="quote-box" id="quoteBox">Click below for a mindful moment 🍃</div>
+    <button onclick="showQuote()">🌿 Inspire Me</button>
+
+    <script>
+        const quotes = [
+            "Peace comes from within. Do not seek it without. – Buddha",
+            "Be like water, my friend. – Bruce Lee",
+            "Silence is sometimes the best answer.",
+            "Don’t try to calm the storm. Calm yourself. The storm will pass.",
+            "Mindfulness isn’t difficult, we just need to remember to do it. – Sharon Salzberg"
+        ];
+
+        function showQuote() {
+            const quoteBox = document.getElementById("quoteBox");
+            const random = quotes[Math.floor(Math.random() * quotes.length)];
+            quoteBox.textContent = random;
+        }
+    </script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 60,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#60a5fa"
+                },
+                "shape": {
+                    "type": "circle"
+                },
+                "opacity": {
+                    "value": 0.3
+                },
+                "size": {
+                    "value": 4
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1.5
+                }
+            },
+            "interactivity": {
+                "events": {
+                    "onhover": {
+                        "enable": false
+                    },
+                    "onclick": {
+                        "enable": false
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+    <script>
+        const breatheText = document.getElementById("breatheText");
+        const phases = ["Breathe in...", "Hold...", "Breathe out...", "Hold..."];
+        let phaseIndex = 0;
+    
+        setInterval(() => {
+            breatheText.textContent = phases[phaseIndex];
+            phaseIndex = (phaseIndex + 1) % phases.length;
+        }, 4000);
+    </script>
+    
+    
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>📊 Dashboard – Zamani</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f9ff;
+            color: #1e293b;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav a {
+            margin: 0 12px;
+            text-decoration: none;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+
+        .highlight-card {
+            background: #ffffff;
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 600px;
+            border-left: 6px solid #3b82f6;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .highlight-card h2 {
+            margin-bottom: 10px;
+        }
+
+        .highlight-card p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body>
+    <!-- 🔗 Nav -->
+    <div class="nav">
+        <a href="/">🏠 Home</a> |
+        <a href="/weekly">📆 Weekly Overview</a> |
+        <a href="/zen">🎧 Zen Mode</a> |
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="{{ url_for('smart_budget') }}" class="smart-budget-button">💡 View Smart Budget Tips</a>
+    </div>
+
+    <h1>📈 Your Spending Dashboard</h1>
+
+    <!-- 🏆 Highlight Card -->
+    <div class="highlight-card">
+        <h2>🏆 Top Spending Category (Last 30 Days)</h2>
+        <p>{{ top_category }} — Ksh {{ top_category_amount }}</p>
+        <p style="font-size: 1rem; color: #64748b; margin-top: 10px;">
+            💡 Tip: {{ ai_tip }}
+        </p>
+    </div>
+
+    <div class="chart-container">
+        <h2>Monthly Spending</h2>
+        <canvas id="monthlyChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h2>Spending by Category</h2>
+        <canvas id="categoryChart"></canvas>
+    </div>
+
+    <script>
+        const monthlyData = {{ monthly_data|tojson }};
+        const categoryData = {{ category_data|tojson }};
+
+        // Bar Chart: Monthly totals
+        const monthlyLabels = monthlyData.map(item => item[0]);
+        const monthlyAmounts = monthlyData.map(item => item[1]);
+
+        new Chart(document.getElementById('monthlyChart'), {
+            type: 'bar',
+            data: {
+                labels: monthlyLabels,
+                datasets: [{
+                    label: 'Ksh Spent',
+                    data: monthlyAmounts,
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Pie Chart: Spending by category
+        const categoryLabels = categoryData.map(item => item[0]);
+        const categoryAmounts = categoryData.map(item => item[1]);
+
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'pie',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryAmounts,
+                    backgroundColor: [
+                        '#10b981', '#f97316', '#3b82f6', '#eab308', '#8b5cf6',
+                        '#ec4899', '#22d3ee', '#f43f5e', '#6366f1', '#14b8a6'
+                    ]
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
